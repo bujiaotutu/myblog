@@ -1,29 +1,18 @@
+<!-- eslint-disable no-mixed-spaces-and-tabs -->
 <!--
  * @Author: bujiaotutu 835349858@qq.com
  * @Date: 2022-09-03 16:23:28
  * @LastEditors: bujiaotutu 835349858@qq.com
- * @LastEditTime: 2022-09-18 15:41:47
+ * @LastEditTime: 2022-11-05 17:56:15
  * @FilePath: \workpace\resume\src\views\noteInfo.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="note_list">
     <div class="item_box">
-      <TitleTwo :text="'VUE笔记'"></TitleTwo>
-      <div class="note_item" v-for="(item, index) in vueData" :key="index" @click="($store.commit('isShow',1))">
-        {{ index }}
-      </div>
-    </div>
-    <div class="item_box">
-      <TitleTwo :text="'JQ笔记'"></TitleTwo>
-      <div class="note_item" v-for="(item, index) in jqData" :key="index">
-        {{ index }}
-      </div>
-    </div>
-    <div class="item_box">
-      <TitleTwo :text="'ES6笔记'"></TitleTwo>
-      <div class="note_item" v-for="(item, index) in esData" :key="index">
-        {{ index }}
+      <TitleTwo text="学习记录"></TitleTwo>
+      <div class="note_item" v-for="(item) in mdListData" :key="item.id" @click="toNotePage(item.id)" >
+        {{ item.file_name }}
       </div>
     </div>
     <router-view :class="[!(this.$store.state.isShow)?'no_show':'is_show']" to="/"></router-view>
@@ -35,10 +24,34 @@ export default {
   name: "noteList",
   data() {
     return {
-      vueData: 5,
-      jqData: 3,
-      esData: 10,
+      mdListData:[]
     };
+  },
+  created(){
+     //获取studyList
+     this.$apiFun.getListById({
+      id:3
+    })
+    .then(res=>{
+      console.log(res);
+      this.mdListData = res;
+    })
+  },
+  methods:{
+    toNotePage(id){
+      this.$apiFun.getMdContentById({
+        id:id
+      })
+      .then(res=>{
+        this.$store.commit('isShow',1)
+        this.$router.push({
+          path:'/noteList/',
+          query:{
+            data:res
+          }
+        })
+      })
+    }
   },
   components: { TitleTwo },
 };

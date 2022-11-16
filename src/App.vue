@@ -2,7 +2,7 @@
  * @Author: bujiaotutu 8353498Either disable config file checking with requireConfigFile: false, or configure Babel so58@qq.com
  * @Date: 2022-09-01 16:02:33
  * @LastEditors: bujiaotutu 835349858@qq.com
- * @LastEditTime: 2022-09-18 16:52:05
+ * @LastEditTime: 2022-11-05 18:00:58
  * @FilePath: \workpace\resume\src\App.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,6 +32,7 @@
 
 <script>
 import store from "./store/index";
+import getDate from "./utils/exportTime"
 // import { mapMutations } from "vuex";
 export default {
   name: "App",
@@ -48,8 +49,8 @@ export default {
           title:'首页'
         },
         {
-          url:'/authorInfo',
-          title:'作者简介'
+          url:'/backPage',
+          title:'后台'
         },
         {
           url:'/noteList',
@@ -58,8 +59,12 @@ export default {
         {
           url:'/toolList',
           title:'小工具'
+        },
+        {
+          url:'/saveMd',
+          title:'上传md文件'
         }
-      ]
+      ],
     };
   },
   watch: {
@@ -73,6 +78,7 @@ export default {
     },
   },
   created() {
+    console.log(getDate());
     //获取页面高度
     this.windowHeight = document.documentElement.clientHeight;
     //刷新回到首页
@@ -84,6 +90,9 @@ export default {
       this.$store.commit('renzhen',localStorage.getItem('sfyz'))
       // this.$store.commit('renzhen',0)
     }
+
+    //默认子页面关闭
+    this.$store.commit("isShow",0)
   },
   methods: {
     selectList(i){
@@ -96,6 +105,7 @@ export default {
 </script>
 
 <style lang="scss">
+  // @import '../amaze/css/amazeui.css';
   $font-color:rgb(65, 184, 210);
   *{
     caret-color: rgba(0, 0, 0, 0)

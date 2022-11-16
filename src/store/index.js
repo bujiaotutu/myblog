@@ -2,7 +2,7 @@
  * @Author: bujiaotutu 835349858@qq.com
  * @Date: 2022-09-01 17:05:07
  * @LastEditors: bujiaotutu 835349858@qq.com
- * @LastEditTime: 2022-09-17 20:16:23
+ * @LastEditTime: 2022-11-05 17:56:07
  * @FilePath: \workpace\resume\src\store\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,12 +21,19 @@ const state = {
   list: [1, 2, 3, 4],
   isShow:0,//控制noteList子页面是否显示
   isInfoShow:0,//控制旅游和美食子页面是否显示
+  token:"",//登入状态
+  userName:"",//用户昵称可选
 }
 const getters = {
+  //获取随机数组
   go: state => {
     return state.list.sort(function () {
       return Math.random() - 0.5;
     });
+  },
+  // 获取token
+  getToken:state =>{
+    return state.token || localStorage.getItem("token") || ""
   }
 }
 //声明方法来改变count的值
@@ -61,6 +68,21 @@ const mutations = {
     }else{
       state.isInfoShow = 0
     }
+  },
+  //修改token，并将token存入localStorage
+  setToken(state,token){
+    state.token = token;
+    localStorage.setItem("token",token);
+    console.log('stor、locastorage保存token成功');
+  },
+  //清楚store和localstorage中的token
+  delToken(state){
+    state.token = "";
+    localStorage.removeItem("token");
+  },
+  // 可选,存入登入用户
+  setUserInfo(state, userName) {
+    state.userName = userName;
   }
 }
 const actions = {
